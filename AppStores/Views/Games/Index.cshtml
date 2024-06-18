@@ -1,0 +1,58 @@
+﻿@model IEnumerable<AppStores.Models.Games>
+
+@{
+    ViewData["Title"] = "Игры";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-controller="Games" asp-action="Index" method="get" class="form-inline">
+                <div class="form-group">
+                    <label for="category">Категория:</label>
+                    <select id="category" name="category" class="form-control mr-2">
+                        <option value="1">Все игры</option>
+                        <option value="2">Шутер</option>
+                        <option value="3">Онлайн</option>
+                        <option value="4">Аркады</option>
+                        <option value="5">Симулятор</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Применить</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4">
+        @foreach (var game in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <a href="@Url.Action("Details", new { id = game.Id })">
+                        <img src="@Url.Content(game.Image)" class="card-img-top" alt="@game.Name">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">@game.Name</h5>
+                        <p class="card-text">@Truncate(game.Discription, 100)</p>
+                    </div>
+                    <div class="card-footer">
+                        <form method="post" asp-controller="Games" asp-action="Delete" asp-route-id="@game.Id" onsubmit="return confirm('Вы уверены, что хотите удалить эту игру?');">
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+    public static string Truncate(string value, int length)
+    {
+        if (value.Length <= length)
+            return value;
+        else
+            return value.Substring(0, length) + "...";
+    }
+}

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<AppStores.Models.Books>
+
+@{
+    ViewData["Title"] = "Книги";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-controller="Books" asp-action="Index" method="get" class="form-inline">
+                <div class="form-group">
+                    <label for="category">Категория:</label>
+                    <select id="category" name="category" class="form-control mr-2">
+                        <option value="1">Все книги</option>
+                        <option value="2">Романтика</option>
+                        <option value="3">Ужасы</option>
+                        <option value="4">Манга</option>
+                        <option value="5">Фэнтези</option>
+                        <option value="6">Детектив</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Применить</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4">
+        @foreach (var book in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <a href="@Url.Action("Details", new { id = book.Id })">
+                        <img src="@Url.Content(book.Image)" class="card-img-top" alt="@book.Name">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Name</h5>
+                        <h7 class="card-title">Автор:@book.Avtor</h7>
+                        <p class="card-text">@Truncate(book.Discription, 100)</p>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+    public static string Truncate(string value, int length)
+    {
+        if (value.Length <= length)
+            return value;
+        else
+            return value.Substring(0, length) + "...";
+    }
+}

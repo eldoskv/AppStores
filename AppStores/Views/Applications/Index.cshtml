@@ -1,0 +1,53 @@
+﻿@model IEnumerable<AppStores.Models.Applications>
+
+@{
+    ViewData["Title"] = "Приложения";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-controller="Applications" asp-action="Index" method="get" class="form-inline">
+                <div class="form-group">
+                    <label for="category">Категория:</label>
+                    <select id="category" name="category" class="form-control mr-2">
+                        <option value="1">Все приложения</option>
+                        <option value="2">Соц Сети</option>
+                        <option value="3">Спорт</option>
+                        <option value="4">Еда</option>
+                        <option value="5">Транспорт</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Применить</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4">
+        @foreach (var application in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <a href="@Url.Action("Details", new { id = application.Id })">
+                        <img src="@Url.Content(application.Image)" class="card-img-top" alt="@application.Name">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">@application.Name</h5>
+                        <p class="card-text">@Truncate(application.Discription, 100)</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+    public static string Truncate(string value, int length)
+    {
+        if (value.Length <= length)
+            return value;
+        else
+            return value.Substring(0, length) + "...";
+    }
+}

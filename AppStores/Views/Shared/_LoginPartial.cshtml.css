@@ -1,0 +1,7 @@
+﻿.btn-group .btn-link {
+    text-decoration: none !important;
+}
+
+    .btn-group .btn-link::after {
+        display: none !important;
+    }
